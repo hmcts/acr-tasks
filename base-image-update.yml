@@ -9,7 +9,8 @@ trigger:
 pr: none
 variables:
   environment: 'nonprod'
-  resourceGroup: cnp-acr-rg
+  acrName: hmctspublic
+  targetRegistry: hmctspublic.azurecr.io
 
 jobs:
 - job:
@@ -47,36 +48,35 @@ jobs:
         repo: https://github.com/hmcts/cnp-java-base.git
         dockerfile: distroless/Dockerfile
         image: hmcts/cnp-java-base:openjdk-8-distroless-1.0
-        extraArgs: "{\"isSecret\": false, \"name\": \"version\", \"value\": \"8\"}"
+        extraArgs: "--arg version=8"
       openjdk-8-distroless:
         taskName: java-base-distroless-debug-8
         repo: https://github.com/hmcts/cnp-java-base.git
         dockerfile: distroless/Dockerfile
         image: hmcts/cnp-java-base:openjdk-8-distroless-debug-1.0
-        extraArgs: "{\"isSecret\": false, \"name\": \"version\", \"value\": \"8-debug\"}"
+        extraArgs: "--arg version=8-debug"
       openjdk-11-distroless:
         taskName: java-base-distroless-11
         repo: https://github.com/hmcts/cnp-java-base.git
         dockerfile: distroless/Dockerfile
         image: hmcts/cnp-java-base:openjdk-11-distroless-1.0
-        extraArgs: "{\"isSecret\": false, \"name\": \"version\", \"value\": \"11\"}"
+        extraArgs: "--arg version=11"
       openjdk-11-distroless:
         taskName: java-base-distroless-debug-11
         repo: https://github.com/hmcts/cnp-java-base.git
         dockerfile: distroless/Dockerfile
         image: hmcts/cnp-java-base:openjdk-11-distroless-debug-1.0
-        extraArgs: "{\"isSecret\": false, \"name\": \"version\", \"value\": \"11-debug\"}"
-  
+        extraArgs: "--arg version=11-debug"
+
   steps:
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Create acr task for automatic image patching on base image update'
-      continueOnError: true
-      inputs:
+  - task: AzureCLI@1
+    displayName: 'Create acr task for automatic image patching on base image update'
+    inputs:
       azureSubscription: azurerm-nonprod
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: $(resourceGroup)
-        location: 'UK South'
-        templateLocation: 'Linked artifact'
-        csmFile: 'acr-task.json'
-        csmParametersFile: 'hmctspublic.json'
-        overrideParameters: '-taskName $(taskName) -contextPath $(repo) -dockerFilePath $(dockerFile) -imageName $(image) -arguments $(extraArgs)'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        echo "Creating acr task: $(taskName) ..."
+        az acr task create -n $(taskName) -r $(acrName) -c $(repo) --branch master -f $(dockerfile) $(extraArgs) -t $(image) \
+          --commit-trigger-enabled false --pull-request-trigger-enabled false
+        # A task needs to be executed manually the 1st time to activate it. That's why we cannot use an ARM template
+        az acr task run -n $(taskName) -r $(acrName) 
