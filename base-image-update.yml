@@ -51,28 +51,28 @@ jobs:
         taskName: java-base-distroless-8
         repo: https://github.com/hmcts/cnp-java-base.git
         contextSuffix: '#:distroless'
-        dockerfile: distroless/Dockerfile
+        dockerfile: Dockerfile
         image: hmcts/cnp-java-base:openjdk-8-distroless-1.0
         extraArgs: "--arg version=8"
       openjdk-8-distroless-debug:
         taskName: java-base-distroless-debug-8
         repo: https://github.com/hmcts/cnp-java-base.git
         contextSuffix: '#:distroless'
-        dockerfile: distroless/Dockerfile
+        dockerfile: Dockerfile
         image: hmcts/cnp-java-base:openjdk-8-distroless-debug-1.0
         extraArgs: "--arg version=8-debug"
       openjdk-11-distroless:
         taskName: java-base-distroless-11
         repo: https://github.com/hmcts/cnp-java-base.git
         contextSuffix: '#:distroless'
-        dockerfile: distroless/Dockerfile
+        dockerfile: Dockerfile
         image: hmcts/cnp-java-base:openjdk-11-distroless-1.0
         extraArgs: "--arg version=11"
       openjdk-11-distroless-debug:
         taskName: java-base-distroless-debug-11
         repo: https://github.com/hmcts/cnp-java-base.git
         contextSuffix: '#:distroless'
-        dockerfile: distroless/Dockerfile
+        dockerfile: Dockerfile
         image: hmcts/cnp-java-base:openjdk-11-distroless-debug-1.0
         extraArgs: "--arg version=11-debug"
 
