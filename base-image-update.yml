@@ -8,9 +8,9 @@ trigger:
     - master
 pr: none
 variables:
-  environment: 'nonprod'
   acrName: hmctspublic
   targetRegistry: hmctspublic.azurecr.io
+  serviceConnection: 'azurerm-prod'
 
 jobs:
 - job:
@@ -80,7 +80,7 @@ jobs:
   - task: AzureCLI@1
     displayName: 'Create acr task for automatic image patching on base image update'
     inputs:
-      azureSubscription: azurerm-nonprod
+      azureSubscription: $(serviceConnection)
       scriptLocation: 'inlineScript'
       inlineScript: |
         set -e
