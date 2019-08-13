@@ -5,3 +5,4 @@ Collection of Azure Container Registry tasks.
 - `base-image-update.yaml`: Autopatch task for hmcts base images (e.g. hmcts/base/node/alpine-lts-10:10-alpine). This triggers an 
   image rebuild as soon as its base image is updated by the upstream maintainer, for example with a critical OS security patch. 
   For more details see: [ACR OS patching](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-tasks-overview#automate-os-and-framework-patching)
+- `tf-utils-build.yaml`: Builds a docker image for the terraform utils application. For details see: [Terraform utils](https://github.com/hmcts/terraform-utils) 
