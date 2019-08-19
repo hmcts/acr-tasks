@@ -18,6 +18,12 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
+  - task: AzureKeyVault@1
+    displayName: 'Get secrets from Keyvault'
+    inputs:
+      azureSubscription: $(serviceConnection)
+      keyVaultName: infra-vault-prod
+      secretsFilter: 'hmcts-github-apikey'      
   - task: AzureCLI@1
     displayName: 'Create acr task to build Terraform utils'
     inputs:
@@ -27,6 +33,6 @@ jobs:
         set -e
         echo "Creating acr task: $(taskName)"
         az acr task create -n $(taskName) -r $(acrName) -c https://github.com/hmcts/terraform-utils.git -f tf-utils-build.yaml \
-          --commit-trigger-enabled true --pull-request-trigger-enabled false
+          --commit-trigger-enabled true --pull-request-trigger-enabled false --git-access-token $(hmcts-github-apikey)
         # A task needs to be executed manually the 1st time to activate it. That's why we cannot use an ARM template
         az acr task run -n $(taskName) -r $(acrName) 
