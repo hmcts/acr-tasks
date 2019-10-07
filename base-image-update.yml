@@ -5,7 +5,7 @@ name: ACR base image import
 trigger:
   branches:
     include:
-    - master
+      - master
 pr: none
 variables:
   acrName: hmctspublic
@@ -13,135 +13,135 @@ variables:
   serviceConnection: 'azurerm-prod'
 
 jobs:
-- job:
-  pool:
-    vmImage: 'Ubuntu 16.04'
-  strategy:
-    maxParallel: 4
-    matrix: 
-      node-8-alpine:
-        taskName: node-base-alpine-8
-        repo: https://github.com/hmcts/cnp-node-base.git
-        contextSuffix: ''
-        dockerfile: 8/alpine/Dockerfile
-        image: base/node/alpine-lts-8:8-alpine
-        extraArgs:
-      node-10-alpine:
-        taskName: node-base-alpine-10
-        repo: https://github.com/hmcts/cnp-node-base.git
-        contextSuffix: ''
-        dockerfile: 10/alpine/Dockerfile
-        image: base/node/alpine-lts-10:10-alpine
-        extraArgs:
-      node-8-stretch-slim:
-        taskName: node-base-stretch-8
-        repo: https://github.com/hmcts/cnp-node-base.git
-        contextSuffix: ''
-        dockerfile: 8/stretch-slim/Dockerfile
-        image: base/node/stretch-slim-lts-8:8-stretch-slim
-        extraArgs:
-      node-10-stretch-slim:
-        taskName: node-base-stretch-10
-        repo: https://github.com/hmcts/cnp-node-base.git
-        contextSuffix: ''
-        dockerfile: 10/stretch-slim/Dockerfile
-        image: base/node/stretch-slim-lts-10:10-stretch-slim
-        extraArgs:
-      openjdk-8-distroless:
-        taskName: java-base-distroless-8
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: Dockerfile
-        image: base/java:openjdk-8-distroless-1.0
-        extraArgs: "--arg version=8"
-      openjdk-8-distroless-debug:
-        taskName: java-base-distroless-debug-8
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: debug.Dockerfile
-        image: base/java:openjdk-8-distroless-debug-1.0
-        extraArgs: "--arg version=8-debug"
-      openjdk-11-distroless:
-        taskName: java-base-distroless-11
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: Dockerfile
-        image: base/java:openjdk-11-distroless-1.0
-        extraArgs: "--arg version=11"
-      openjdk-11-distroless-debug:
-        taskName: java-base-distroless-debug-11
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: debug.Dockerfile
-        image: base/java:openjdk-11-distroless-debug-1.0
-        extraArgs: "--arg version=11-debug"
-      openjdk-8-distroless-1dot1:
-        taskName: java-base-distroless-8-1.1
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: Dockerfile
-        image: base/java:openjdk-8-distroless-1.1
-        extraArgs: "--arg version=8"
-      openjdk-8-distroless-debug-1dot1:
-        taskName: java-base-distroless-debug-8-1.1
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: debug.Dockerfile
-        image: base/java:openjdk-8-distroless-debug-1.1
-        extraArgs: "--arg version=8-debug"
-      openjdk-11-distroless-1dot1:
-        taskName: java-base-distroless-11-1.1
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: Dockerfile
-        image: base/java:openjdk-11-distroless-1.1
-        extraArgs: "--arg version=11"
-      openjdk-11-distroless-debug-1dot1:
-        taskName: java-base-distroless-debug-11-1.1
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: debug.Dockerfile
-        image: base/java:openjdk-11-distroless-debug-1.1
-        extraArgs: "--arg version=11-debug"
-      openjdk-8-distroless-1dot2:
-        taskName: java-base-distroless-8-1.2
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: Dockerfile
-        image: base/java:openjdk-8-distroless-1.2
-        extraArgs: "--arg version=8"
-      openjdk-8-distroless-debug-1dot2:
-        taskName: java-base-distroless-debug-8-1.2
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: debug.Dockerfile
-        image: base/java:openjdk-8-distroless-debug-1.2
-        extraArgs: "--arg version=8-debug"
-      openjdk-11-distroless-1dot2:
-        taskName: java-base-distroless-11-1.2
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: Dockerfile
-        image: base/java:openjdk-11-distroless-1.2
-        extraArgs: "--arg version=11"
-      openjdk-11-distroless-debug-1dot2:
-        taskName: java-base-distroless-debug-11-1.2
-        repo: https://github.com/hmcts/cnp-java-base.git
-        contextSuffix: '#:distroless'
-        dockerfile: debug.Dockerfile
-        image: base/java:openjdk-11-distroless-debug-1.2
-        extraArgs: "--arg version=11-debug"
+  - job:
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    strategy:
+      maxParallel: 4
+      matrix:
+        node-8-alpine:
+          taskName: node-base-alpine-8
+          repo: https://github.com/hmcts/cnp-node-base.git
+          contextSuffix: ''
+          dockerfile: 8/alpine/Dockerfile
+          image: base/node/alpine-lts-8:8-alpine
+          extraArgs:
+        node-10-alpine:
+          taskName: node-base-alpine-10
+          repo: https://github.com/hmcts/cnp-node-base.git
+          contextSuffix: ''
+          dockerfile: 10/alpine/Dockerfile
+          image: base/node/alpine-lts-10:10-alpine
+          extraArgs:
+        node-8-stretch-slim:
+          taskName: node-base-stretch-8
+          repo: https://github.com/hmcts/cnp-node-base.git
+          contextSuffix: ''
+          dockerfile: 8/stretch-slim/Dockerfile
+          image: base/node/stretch-slim-lts-8:8-stretch-slim
+          extraArgs:
+        node-10-stretch-slim:
+          taskName: node-base-stretch-10
+          repo: https://github.com/hmcts/cnp-node-base.git
+          contextSuffix: ''
+          dockerfile: 10/stretch-slim/Dockerfile
+          image: base/node/stretch-slim-lts-10:10-stretch-slim
+          extraArgs:
+        openjdk-8-distroless:
+          taskName: java-base-distroless-8
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: Dockerfile
+          image: base/java:openjdk-8-distroless-1.0
+          extraArgs: "--arg version=8"
+        openjdk-8-distroless-debug:
+          taskName: java-base-distroless-debug-8
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: debug.Dockerfile
+          image: base/java:openjdk-8-distroless-debug-1.0
+          extraArgs: "--arg version=8-debug"
+        openjdk-11-distroless:
+          taskName: java-base-distroless-11
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: Dockerfile
+          image: base/java:openjdk-11-distroless-1.0
+          extraArgs: "--arg version=11"
+        openjdk-11-distroless-debug:
+          taskName: java-base-distroless-debug-11
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: debug.Dockerfile
+          image: base/java:openjdk-11-distroless-debug-1.0
+          extraArgs: "--arg version=11-debug"
+        openjdk-8-distroless-1.1:
+          taskName: java-base-distroless-8-1dot1
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: Dockerfile
+          image: base/java:openjdk-8-distroless-1.1
+          extraArgs: "--arg version=8"
+        openjdk-8-distroless-debug-1.1:
+          taskName: java-base-distroless-debug-8-1dot1
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: debug.Dockerfile
+          image: base/java:openjdk-8-distroless-debug-1.1
+          extraArgs: "--arg version=8-debug"
+        openjdk-11-distroless-1.1:
+          taskName: java-base-distroless-11-1dot1
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: Dockerfile
+          image: base/java:openjdk-11-distroless-1.1
+          extraArgs: "--arg version=11"
+        openjdk-11-distroless-debug-1.1:
+          taskName: java-base-distroless-debug-11-1dot1
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: debug.Dockerfile
+          image: base/java:openjdk-11-distroless-debug-1.1
+          extraArgs: "--arg version=11-debug"
+        openjdk-8-distroless-1.2:
+          taskName: java-base-distroless-8-1dot2
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: Dockerfile
+          image: base/java:openjdk-8-distroless-1.2
+          extraArgs: "--arg version=8"
+        openjdk-8-distroless-debug-1.2:
+          taskName: java-base-distroless-debug-8-1dot2
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: debug.Dockerfile
+          image: base/java:openjdk-8-distroless-debug-1.2
+          extraArgs: "--arg version=8-debug"
+        openjdk-11-distroless-1.2:
+          taskName: java-base-distroless-11-1dot2
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: Dockerfile
+          image: base/java:openjdk-11-distroless-1.2
+          extraArgs: "--arg version=11"
+        openjdk-11-distroless-debug-1.2:
+          taskName: java-base-distroless-debug-11-1dot2
+          repo: https://github.com/hmcts/cnp-java-base.git
+          contextSuffix: '#:distroless'
+          dockerfile: debug.Dockerfile
+          image: base/java:openjdk-11-distroless-debug-1.2
+          extraArgs: "--arg version=11-debug"
 
-  steps:
-  - task: AzureCLI@1
-    displayName: 'Create acr task for automatic image patching on base image update'
-    inputs:
-      azureSubscription: $(serviceConnection)
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        set -e
-        echo "Creating acr task: $(taskName) ..."
-        az acr task create -n $(taskName) -r $(acrName) -c $(repo)$(contextSuffix) --branch master -f $(dockerfile) $(extraArgs) -t $(image) \
-          --commit-trigger-enabled false --pull-request-trigger-enabled false
-        # A task needs to be executed manually the 1st time to activate it. That's why we cannot use an ARM template
-        az acr task run -n $(taskName) -r $(acrName) 
+    steps:
+      - task: AzureCLI@1
+        displayName: 'Create acr task for automatic image patching on base image update'
+        inputs:
+          azureSubscription: $(serviceConnection)
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            set -e
+            echo "Creating acr task: $(taskName) ..."
+            az acr task create -n $(taskName) -r $(acrName) -c $(repo)$(contextSuffix) --branch master -f $(dockerfile) $(extraArgs) -t $(image) \
+              --commit-trigger-enabled false --pull-request-trigger-enabled false
+            # A task needs to be executed manually the 1st time to activate it. That's why we cannot use an ARM template
+            az acr task run -n $(taskName) -r $(acrName)
