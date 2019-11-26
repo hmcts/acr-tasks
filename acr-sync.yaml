@@ -1,0 +1,38 @@
+#
+# Build and push ACR sync check image
+#
+name: ACR build ACR sync check
+trigger:
+  branches:
+    include:
+    - master
+pr: none
+variables:
+  acrName: hmctspublic
+  targetRegistry: hmctspublic.azurecr.io
+  serviceConnection: 'azurerm-prod'
+  taskName: 'acr-sync-build'
+
+jobs:
+- job:
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - task: AzureKeyVault@1
+    displayName: 'Get secrets from Keyvault'
+    inputs:
+      azureSubscription: $(serviceConnection)
+      keyVaultName: infra-vault-prod
+      secretsFilter: 'hmcts-github-apikey'      
+  - task: AzureCLI@1
+    displayName: 'Create acr task to build acr sync check'
+    inputs:
+      azureSubscription: $(serviceConnection)
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        set -e
+        echo "Creating acr task: $(taskName)"
+        az acr task create -n $(taskName) -r $(acrName) -c https://github.com/hmcts/azure-cftapps-monitoring.git#:acr-sync -f acr-sync-build.yaml \
+          --commit-trigger-enabled true --pull-request-trigger-enabled false --git-access-token $(hmcts-github-apikey)
+        # A task needs to be executed manually the 1st time to activate it. That's why we cannot use an ARM template
+        az acr task run -n $(taskName) -r $(acrName) 
