@@ -1,0 +1,46 @@
+#
+# Clean up prod images from acr registry if older than 3 months
+#
+name: ACR build Terraform utils
+trigger:
+  branches:
+    include:
+    - master
+pr: none
+variables:
+  acrName: hmctspublic
+  targetRegistry: hmctspublic.azurecr.io
+  targetResourceGroup: 'rpe-acr-prod-rg'
+  serviceConnection: 'azurerm-prod'
+  taskName: 'acr-prod-cleanup'
+
+jobs:
+- job:
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - task: AzureKeyVault@1
+    displayName: 'Get secrets from Keyvault'
+    inputs:
+      azureSubscription: $(serviceConnection)
+      keyVaultName: infra-vault-prod
+      secretsFilter: 'hmcts-github-apikey'      
+  - task: AzureCLI@1
+    displayName: 'Create acr task to build Terraform utils'
+    inputs:
+      azureSubscription: $(serviceConnection)
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        set -e
+        echo "Creating acr task: $(taskName)"
+        az acr repository list --name $(targetRegistry) --resource-group $(targetResourceGroup) -o tsv | while read repo
+        do
+          PURGE_FILTER="${PURGE_FILTER} --filter ${repo}:prod-.*"
+        done
+        PURGE_CMD="mcr.microsoft.com/acr/acr-cli:0.1 purge --registry {{.Run.Registry}} --filter 'draft-store/service:prod-.*' --untagged --ago 60d"
+
+
+        az acr task create -n $(taskName) -r $(acrName) -c https://github.com/hmcts/terraform-utils.git -f tf-utils-build.yaml \
+           --commit-trigger-enabled true --pull-request-trigger-enabled false --git-access-token $(hmcts-github-apikey)
+        # A task needs to be executed manually the 1st time to activate it. That's why we cannot use an ARM template
+        az acr task run -n $(taskName) -r $(acrName) 
