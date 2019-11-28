@@ -1,0 +1,38 @@
+#
+# Build and push Kubernetes environment injector
+#
+name: ACR build Kubernetes environment injector webhook
+trigger:
+  branches:
+    include:
+    - master
+pr: none
+variables:
+  acrName: hmctspublic
+  targetRegistry: hmctspublic.azurecr.io
+  serviceConnection: 'azurerm-prod'
+  taskName: 'k8s-env-injector-build'
+
+jobs:
+- job:
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - task: AzureKeyVault@1
+    displayName: 'Get secrets from Keyvault'
+    inputs:
+      azureSubscription: $(serviceConnection)
+      keyVaultName: infra-vault-prod
+      secretsFilter: 'hmcts-github-apikey'      
+  - task: AzureCLI@1
+    displayName: 'Create acr task to build Kubernetes env injector'
+    inputs:
+      azureSubscription: $(serviceConnection)
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        set -e
+        echo "Creating acr task: $(taskName)"
+        az acr task create -n $(taskName) -r $(acrName) -c https://github.com/hmcts/k8s-env-injector.git -f k8s-env-injector-build.yaml \
+           --commit-trigger-enabled true --pull-request-trigger-enabled false --git-access-token $(hmcts-github-apikey)
+        # A task needs to be executed manually the 1st time to activate it. That's why we cannot use an ARM template
+        az acr task run -n $(taskName) -r $(acrName) 
