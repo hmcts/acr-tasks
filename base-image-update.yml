@@ -24,28 +24,42 @@ jobs:
           repo: https://github.com/hmcts/cnp-node-base.git
           contextSuffix: ''
           dockerfile: 8/alpine/Dockerfile
-          image: base/node/alpine-lts-8:8-alpine
+          image: base/node:8-alpine
           extraArgs:
         node-10-alpine:
           taskName: node-base-alpine-10
           repo: https://github.com/hmcts/cnp-node-base.git
           contextSuffix: ''
           dockerfile: 10/alpine/Dockerfile
-          image: base/node/alpine-lts-10:10-alpine
+          image: base/node:10-alpine
+          extraArgs:
+        node-10-alpine:
+          taskName: node-base-alpine-12
+          repo: https://github.com/hmcts/cnp-node-base.git
+          contextSuffix: ''
+          dockerfile: 12/alpine/Dockerfile
+          image: base/node:12-alpine
           extraArgs:
         node-8-stretch-slim:
           taskName: node-base-stretch-8
           repo: https://github.com/hmcts/cnp-node-base.git
           contextSuffix: ''
           dockerfile: 8/stretch-slim/Dockerfile
-          image: base/node/stretch-slim-lts-8:8-stretch-slim
+          image: base/node:8-stretch-slim
           extraArgs:
         node-10-stretch-slim:
           taskName: node-base-stretch-10
           repo: https://github.com/hmcts/cnp-node-base.git
           contextSuffix: ''
           dockerfile: 10/stretch-slim/Dockerfile
-          image: base/node/stretch-slim-lts-10:10-stretch-slim
+          image: base/node:10-stretch-slim
+          extraArgs:
+        node-12-stretch-slim:
+          taskName: node-base-stretch-12
+          repo: https://github.com/hmcts/cnp-node-base.git
+          contextSuffix: ''
+          dockerfile: 12/stretch-slim/Dockerfile
+          image: base/node:12-stretch-slim
           extraArgs:
         openjdk-8-distroless:
           taskName: java-base-distroless-8
