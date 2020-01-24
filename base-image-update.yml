@@ -33,7 +33,7 @@ jobs:
           dockerfile: 10/alpine/Dockerfile
           image: base/node:10-alpine
           extraArgs:
-        node-10-alpine:
+        node-12-alpine:
           taskName: node-base-alpine-12
           repo: https://github.com/hmcts/cnp-node-base.git
           contextSuffix: ''
