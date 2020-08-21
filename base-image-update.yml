@@ -19,13 +19,6 @@ jobs:
     strategy:
       maxParallel: 4
       matrix:
-        node-10-alpine:
-          taskName: node-base-alpine-10
-          repo: https://github.com/hmcts/cnp-node-base.git
-          contextSuffix: ''
-          dockerfile: 10/alpine/Dockerfile
-          image: base/node:10-alpine
-          extraArgs:
         node-12-alpine:
           taskName: node-base-alpine-12
           repo: https://github.com/hmcts/cnp-node-base.git
@@ -39,6 +32,20 @@ jobs:
           contextSuffix: ''
           dockerfile: 12/buster-slim/Dockerfile
           image: base/node:12-buster-slim
+          extraArgs:
+        node-14-alpine:
+          taskName: node-base-alpine-14
+          repo: https://github.com/hmcts/cnp-node-base.git
+          contextSuffix: ''
+          dockerfile: 12/alpine/Dockerfile
+          image: base/node:14-alpine
+          extraArgs:
+        node-14-buster-slim:
+          taskName: node-base-buster-14
+          repo: https://github.com/hmcts/cnp-node-base.git
+          contextSuffix: ''
+          dockerfile: 14/buster-slim/Dockerfile
+          image: base/node:14-buster-slim
           extraArgs:
         openjdk-8-distroless:
           taskName: java-base-distroless-8
